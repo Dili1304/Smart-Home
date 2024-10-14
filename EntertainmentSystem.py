@@ -5,72 +5,70 @@ from kivy.uix.label import Label
 from kivy.uix.slider import Slider
 from kivy.uix.button import Button
 
-kivy.require("2.0.0") #kivy version
+kivy.require("2.0.0")  # kivy version
 
-class SmartHomeEntertainment(BoxLayout):
-    def __init__(self, **kwargs):#defining the function
-        super().__init__(**kwargs)
-        self.orientation = 'vertical'
+def build():
+    # Creating the layout
+    layout = BoxLayout(orientation='vertical')
+    
+    # System status label
+    status_label = Label(text="System Status: Off", font_size=24)
+    layout.add_widget(status_label)
+    
+    # TV State initially set to 'off'
+    tv_state = {'is_on': False}
 
-        # creating a lable for System status
-        self.StatusLabel = Label(text="System Status: Off", font_size=24)
-        self.add_widget(self.StatusLabel) #adds the StatusLabel to the SmartHomeEntertainment layout
-
-        # creating a button for TV 
-        self.TVbtn = Button(text="Turn TV On", on_press=self.toggleTV) 
-        self.add_widget(self.TVbtn) #adds the TVbtn to the SmartHomeEntertainment layout
-
-        # creating a button for Audio system
-        self.AudioBtn = Button(text="Turn Audio On", on_press=self.toggleAudio)
-        self.add_widget(self.AudioBtn)#adds the Audio system button to the SmartHomeEntertainment layout
-
-        # Volume - allows users to adjust the volume from 0% to 100% 
-        self.VolLabel = Label(text="Volume: 0%", font_size=18)
-        self.add_widget(self.VolLabel)
-        self.VolSlider = Slider(min=0, max=100, value=0)
-        self.VolSlider.bind(value=self.OnVolumeChange)
-        self.add_widget(self.VolSlider)
-
-        
-
-        # State tracking
-        self.TV_ON = False
-        self.Audio_ON = False
-
-    #TV
-    def toggleTV(self, instance):
-        if self.TV_ON:
+    # Toggle TV function that toggles the TV state each time the button is pressed
+    def toggle_tv(instance):
+        tv_state['is_on'] = not tv_state['is_on']
+        if tv_state['is_on']:
             instance.text = "Turn TV Off"
-            self.StatusLabel.text = "System Status: TV On"
-            self.TV_ON = False
+            status_label.text = "System Status: TV On"
         else:
             instance.text = "Turn TV On"
-            self.StatusLabel.text = "System Status: TV Off"
-            self.TV_ON = True
+            status_label.text = "System Status: TV Off"
 
-    #Audio system
-    def toggleAudio(self, instance):
-        if self.Audio_ON:
+    # TV button
+    tv_button = Button(text="Turn TV On", on_press=toggle_tv)#pressing the button triggers the toggle
+    layout.add_widget(tv_button)
+
+    # Audio State - audio is initially off
+    audio_state = {'is_on': False}
+
+    # Toggle audio function
+    def toggle_audio(instance):
+        audio_state['is_on'] = not audio_state['is_on']
+        if audio_state['is_on']:
             instance.text = "Turn Audio Off"
-            self.StatusLabel.text = "System Status: Audio On"
-            self.Audio_ON = False
+            status_label.text = "System Status: Audio On"
         else:
             instance.text = "Turn Audio On"
-            self.StatusLabel.text = "System Status: Audio Off"
-            self.Audio_ON = True
+            status_label.text = "System Status: Audio Off"
 
+    # Audio button
+    audio_button = Button(text="Turn Audio On", on_press=toggle_audio)
+    layout.add_widget(audio_button)
 
-    def OnVolumeChange(self, instance, value): # value is the current value of the slider when it changes 
-        self.VolLabel.text = f"Volume: {int(value)}%"
+    # Volume Label
+    volume_label = Label(text="Volume: 0%", font_size=18)
+    layout.add_widget(volume_label)
 
-#Creating a new class SmartSystemApp
-class SmartSystemApp(App):
-    def build(self):
-        return SmartHomeEntertainment()
+    # Volume slider change function
+    def on_volume_change(instance, value):#instance-The slider widget and value-The current value of the slider.
+        volume_label.text = f"Volume: {int(value)}%"
 
-SmartSystemApp().run()
-#Features:
-#TV Control: Button to toggle the TV on and off.
-#Volume Adjustment: Slider to control the volume level, displayed in percentage.
-#Audio System: Button to turn the audio system on and off.
-#Status Display: Label that shows the current state of the system (TV, media playback, audio).
+    # Volume slider
+    volume_slider = Slider(min=0, max=100, value=0)
+    volume_slider.bind(value=on_volume_change)#
+    layout.add_widget(volume_slider)
+
+    return layout
+
+# Kivy app definition
+def run_app():
+    app = App()#Creates an instance of the Kivy App class
+    app.build = build# This tells Kivy to use the build function to construct the UI when the app starts.
+    app.run()#Starts the Kivy event loop
+
+if __name__ == "__main__":#run_app() is called only when the script is executed directly
+    run_app()
