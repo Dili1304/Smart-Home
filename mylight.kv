@@ -1,0 +1,107 @@
+#:kivy 2.3.0
+
+<MyWidget>:
+    FloatLayout:
+        pos:0,0
+        size:root.width,root.height
+        Button:
+            text:'ON'
+            background_color: (0,1,0,1)
+            size_hint: .3,.2
+            pos_hint: {'x': 0.2,'y': 0.2}
+            on_release: root.open_popup()
+        Button:
+            text:'OFF'
+            background_color: (1,0,0,1)
+            size_hint: .3,.2
+            pos_hint: {'x': 0.5,'y': 0.2}
+            on_release: root.open_pops()
+        Slider:
+            id: temperature
+            max: (50)
+            min: (15)
+            value:24
+            on_value:root.slider_on_value(self)
+            pos_hint: {'x': 0.2,'y': 0.5}
+            size_hint: (.5,.3)
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: (1,.1)
+            pos_hint: {'center_x': 0.5,'center_y': 0.6}
+            Label:
+                text:'Temperature: '
+                size_hint: (.3,.3)
+            Label:
+                text:str(int(temperature.value))
+                size_hint: (.3,.3)     
+<LFPopup>:
+    title: 'STATUS'
+    auto_dismiss: False
+    size_hint: (.50,.50)
+    pos_hint: {'center_x': 0.5,'center_y': 0.5}
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'LIGHTS ARE OFF'
+        Button:
+            text: 'Close'
+            size_hint: (.2,.2)
+            pos_hint: {'x': 0.4,'y': 0.6}
+            on_release:root.dismiss()
+<LOPopup>:
+    title: 'STATUS'
+    auto_dismiss: False
+    size_hint: (.50,.50)
+    pos_hint: {'center_x': 0.5,'center_y': 0.5}
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'LIGHTS ARE ON'
+        Button:
+            text: 'Close'
+            size_hint: (.2,.2)
+            pos_hint: {'x': 0.4,'y': 0.6}
+            on_release:root.dismiss()
+
+<Lowtemp>:
+    title: 'TEMPERATURE STATUS'
+    auto_dismiss: False
+    size_hint: (.50,.50)
+    pos_hint: {'center_x': 0.5,'center_y': 0.5}
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Extremely low temperatures'
+        Button:
+            text: 'Close'
+            size_hint: (.2,.2)
+            pos_hint: {'x': 0.4,'y': 0.6}
+            on_release:root.dismiss()
+<Hightemp>:
+    title: 'TEMPERATURE STATUS'
+    auto_dismiss: False
+    size_hint: (.50,.50)
+    pos_hint: {'center_x': 0.5,'center_y': 0.5}
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Extremely high temperatures'
+        Button:
+            text: 'Close'
+            size_hint: (.2,.2)
+            pos_hint: {'x': 0.4,'y': 0.6}
+            on_release:root.dismiss()
+<Temper_reset>:
+    title: 'TEMPERATURE STATUS'
+    auto_dismiss: False
+    size_hint: (.50,.50)
+    pos_hint: {'center_x': 0.5,'center_y': 0.5}
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Temperatures have been reset to normal values'
+        Button:
+            text: 'Close'
+            size_hint: (.2,.2)
+            pos_hint: {'x': 0.4,'y': 0.6}
+            on_release:root.dismiss()
